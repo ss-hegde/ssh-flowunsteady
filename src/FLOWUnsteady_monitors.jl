@@ -94,9 +94,9 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 ax.set_ylabel(L"Normal load $N_p$ (N/m)")
 
                 ax = axs[3]
-                ax.set_title("Tangential force distribution", color="gray")
+                ax.set_title("Lift distribution", color="gray")
                 ax.set_xlabel("Element index")
-                ax.set_ylabel(L"Tangential load $T_p$ (N/m)")
+                ax.set_ylabel(L"Lift $L$ (N)")
 
                 ax = axs[4]
                 ax.set_title(L"$C_T = \frac{T}{\rho n^2 d^4}$", color="gray")
@@ -174,10 +174,10 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             end
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
 
-            # Tp distribution
+            # Lift distribution
             this_sol = []
             for rotor in rotors
-                this_sol = vcat(this_sol, rotor.sol["Tp"]["field_data"]...)
+                this_sol = vcat(this_sol, rotor.sol["Lift"]["field_data"]...)
             end
             axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
         end
