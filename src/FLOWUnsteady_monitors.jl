@@ -171,6 +171,15 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             this_sol = []
             for rotor in rotors
                 this_sol = vcat(this_sol, rotor.sol["Np"]["field_data"]...)
+				
+				# Integrate total lift and drag
+				L = sum(rotor.sol["Np"])
+				
+				# Control point of each element
+				Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
+				
+				# Force of each element
+				Fs = rotor.sol["Ftot"]
             end
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
 
