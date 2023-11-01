@@ -186,6 +186,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 				
 				# Integrate the total moment with respect to aerodynamic center
 				Mrotor = ( cross(X - Xac, F) for (X, F) in zip(Xs, Fs) )  # Moment
+				print(Mrotor)
             end
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
 
