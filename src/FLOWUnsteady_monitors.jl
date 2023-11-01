@@ -172,8 +172,8 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             for rotor in rotors
                 this_sol = vcat(this_sol, rotor.sol["Np"]["field_data"]...)
 				
-				# Integrate total lift and drag
-				Lrotor = sum(rotor.sol["Np"])
+				# Integrate total lift
+				Lrotor = (rotor.sol["Np"])
 				
 				# Control point of each element
 				Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
