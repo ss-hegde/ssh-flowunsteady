@@ -33,7 +33,7 @@ The aerodynamic performance consists of thrust coefficient
 ![image](http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/rotorhover-example-high02-singlerotor_convergence.png)
 """
 function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
-                                    J_ref::Real, rho_ref::Real, RPM_ref::Real, b::Int, ar::Int,
+                                    J_ref::Real, rho_ref::Real, RPM_ref::Real, b::Real, ar::Real,
                                     nsteps_sim::Int;
                                     t_scale=1.0,                    # Time scaling factor
                                     t_lbl="Simulation time (s)",    # Time-axis label
