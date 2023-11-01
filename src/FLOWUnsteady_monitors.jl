@@ -33,7 +33,7 @@ The aerodynamic performance consists of thrust coefficient
 ![image](http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/rotorhover-example-high02-singlerotor_convergence.png)
 """
 function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
-                                    J_ref::Real, rho_ref::Real, RPM_ref::Real,
+                                    J_ref::Real, rho_ref::Real, RPM_ref::Real, b::Int, ar::Int,
                                     nsteps_sim::Int;
                                     t_scale=1.0,                    # Time scaling factor
                                     t_lbl="Simulation time (s)",    # Time-axis label
@@ -179,7 +179,13 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 				Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
 				
 				# Force of each element
-				Fs = rotor.sol["Ftot"]
+				Fs = rotor.sol["DistributedLoad"]
+				
+				# Aerodynamic point
+				Xac = [0.25* b/ar, 0, 0]
+				
+				# Integrate the total moment with respect to aerodynamic center
+				M = ( cross(X - Xac, F) for (X, F) in zip(Xs, Fs) )
             end
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
 
