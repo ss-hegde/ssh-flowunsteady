@@ -193,7 +193,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 				Xac = [0.25* b/ar, 0, 0]
 				
 				# Integrate the total moment with respect to aerodynamic center
-				Mrotor = vcat(Mrotor, cross(X - Xac, F) for (X, F) in zip(Xs, Fs))  # Moment
+				Mrotor = vcat(Mrotor, cross(X - Xac, F) for (X, F) in (Xs, Fs))  # Moment
 				print(Mrotor)
 				
 				# moment decomposed with respect to direction
