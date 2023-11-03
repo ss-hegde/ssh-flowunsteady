@@ -189,18 +189,18 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 				
 				# Integrate the total moment with respect to aerodynamic center
 				Mrotor = vcat(Mrotor, cross(X - Xac, F) for (X, F) in zip(Xs, Fs))  # Moment
-				#print(Mrotor)
+				print(Mrotor)
 				
 				# moment decomposed with respect to direction
-				lhat_rotor = [1, 0, 0]
-				mhat_rotor = [0, 1, 0]
-				nhat_rotor = [0, 0, 1]
+				#lhat_rotor = [1, 0, 0]
+				#mhat_rotor = [0, 1, 0]
+				#nhat_rotor = [0, 0, 1]
 				
-				mrotor_x = dot(Mrotor, lhat_rotor)
-				mrotor_y = dot(Mrotor, mhat_rotor)
-				mrotor_z = dot(Mrotor, nhat_rotor)
+				#mrotor_x = dot(Mrotor, lhat_rotor)
+				#mrotor_y = dot(Mrotor, mhat_rotor)
+				#mrotor_z = dot(Mrotor, nhat_rotor)
 				
-				print(mrotor_x)
+				#print(mrotor_x)
             end
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
 
