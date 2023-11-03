@@ -182,7 +182,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 				Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
 				
 				# Force of each element
-				Fs = vact(Fs, rotor.sol["DistributedLoad"])
+				Fs = vcat(Fs, rotor.sol["DistributedLoad"])
 				
 				# Aerodynamic point
 				Xac = [0.25* b/ar, 0, 0]
