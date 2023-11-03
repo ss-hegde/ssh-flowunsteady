@@ -197,11 +197,11 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 				#print(Mrotor)
 				
 				# moment decomposed with respect to direction
-				#lhat_rotor = [1, 0, 0]
+				lhat_rotor = [1, 0, 0]
 				#mhat_rotor = [0, 1, 0]
 				#nhat_rotor = [0, 0, 1]
 				
-				#mrotor_x = dot(Mrotor, lhat_rotor)
+				mrotor_x = dot(Mrotor, lhat_rotor)
 				#mrotor_y = dot(Mrotor, mhat_rotor)
 				#mrotor_z = dot(Mrotor, nhat_rotor)
 				
@@ -209,6 +209,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             end
 			print("Total Forces - ", Fs)
 			print("Total Moment - ", Mrotor)
+			print("Moment in x-direction - ", mrotor_x)
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
 			axs[3].plot(1:size(Mrotor,1), Mrotor, stl, alpha=alpha, color=clr)
 
