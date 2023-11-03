@@ -181,13 +181,13 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 this_sol = vcat(this_sol, rotor.sol["Np"]["field_data"]...)
 				
 				# Integrate total lift
-				Lrotor = vcat(Lrotor, rotor.sol["Np"])
+				Lrotor = vcat(Lrotor, rotor.sol["Np"]["field_data"])
 				
 				# Control point of each element
 				Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
 				
 				# Force of each element
-				Fs = vcat(Fs, rotor.sol["DistributedLoad"])
+				Fs = vcat(Fs, rotor.sol["DistributedLoad"]["field_data"])
 				
 				# Aerodynamic point
 				Xac = [0.25* b/ar, 0, 0]
