@@ -93,10 +93,15 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 ax.set_xlabel("Element index")
                 ax.set_ylabel(L"Normal load $N_p$ (N/m)")
 
-                ax = axs[3]
-                ax.set_title("Lift distribution", color="gray")
+                #ax = axs[3]
+                #ax.set_title("Lift distribution", color="gray")
+                #ax.set_xlabel("Element index")
+                #ax.set_ylabel(L"Lift $L$ (N)")
+				
+				ax = axs[3]
+                ax.set_title("Moment", color="gray")
                 ax.set_xlabel("Element index")
-                ax.set_ylabel(L"Lift $L$ (N)")
+                ax.set_ylabel(L"Moment $L$ (Nm)")
 
                 ax = axs[4]
                 ax.set_title(L"$C_T = \frac{T}{\rho n^2 d^4}$", color="gray")
@@ -203,13 +208,15 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 				#print(mrotor_x)
             end
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
+			axs[3].plot(1:size(Mrotor,1), Mrotor, stl, alpha=alpha, color=clr)
+
 
             # Lift distribution
-            this_sol = []
-            for rotor in rotors
-                this_sol = vcat(this_sol, rotor.sol["Lift"]["field_data"]...)
-            end
-            axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
+            #this_sol = []
+            #for rotor in rotors
+            #    this_sol = vcat(this_sol, rotor.sol["Lift"]["field_data"]...)
+            #end
+            #axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
         end
 
         # Plot performance parameters
