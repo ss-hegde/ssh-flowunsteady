@@ -169,24 +169,28 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 
             # Np distribution
             this_sol = []
+			Lrotor = []
+			Fs = []
+			Mrotor = []
             for rotor in rotors
                 this_sol = vcat(this_sol, rotor.sol["Np"]["field_data"]...)
 				
 				# Integrate total lift
-				Lrotor = sum(rotor.sol["Lift"])
+				Lrotor = vcat(Lrotor, rotor.sol["Np"])
 				
 				# Control point of each element
 				Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
 				
 				# Force of each element
-				Fs = rotor.sol["DistributedLoad"]
+				Fs = vact(Fs, rotor.sol["DistributedLoad"])
 				
 				# Aerodynamic point
 				Xac = [0.25* b/ar, 0, 0]
 				
 				# Integrate the total moment with respect to aerodynamic center
-				Mrotor = ( cross(X - Xac, F) for (X, F) in zip(Xs, Fs) )  # Moment
+				Mrotor = vcat(Mrotor, cross(X - Xac, F) for (X, F) in zip(Xs, Fs))  # Moment
 				print(size(Mrotor))
+				
             end
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
 
