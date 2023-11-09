@@ -180,38 +180,38 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             for rotor in rotors
                 this_sol = vcat(this_sol, rotor.sol["Np"]["field_data"]...)
 				
-				# Integrate total lift
-				Lrotor = vcat(Lrotor, rotor.sol["Np"]["field_data"])
+				# # Integrate total lift
+				# Lrotor = vcat(Lrotor, rotor.sol["Np"]["field_data"])
 				
-				# Control point of each element
-				Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
+				# # Control point of each element
+				# Xs = [vlm.getControlPoint(rotor, i) for i in 1:vlm.get_m(rotor)]
 				
-				# Force of each element
-				Fs = vcat(Fs, rotor.sol["DistributedLoad"]["field_data"])
+				# # Force of each element
+				# Fs = vcat(Fs, rotor.sol["DistributedLoad"]["field_data"])
 				
-				# Aerodynamic point
-				Xac = [0.25* b/ar, 0, 0]
+				# # Aerodynamic point
+				# Xac = [0.25* b/ar, 0, 0]
 				
-				# Integrate the total moment with respect to aerodynamic center
-				Mrotor = vcat(Mrotor, cross(X - Xac, F) for (X, F) in (Xs, Fs))  # Moment
-				#print(Mrotor)
+				# # Integrate the total moment with respect to aerodynamic center
+				# Mrotor = vcat(Mrotor, cross(X - Xac, F) for (X, F) in (Xs, Fs))  # Moment
+				# #print(Mrotor)
 				
-				# moment decomposed with respect to direction
-				lhat_rotor = [1, 0, 0]
-				#mhat_rotor = [0, 1, 0]
-				#nhat_rotor = [0, 0, 1]
+				# # moment decomposed with respect to direction
+				# lhat_rotor = [1, 0, 0]
+				# #mhat_rotor = [0, 1, 0]
+				# #nhat_rotor = [0, 0, 1]
 				
-				mrotor_x = dot(Mrotor, lhat_rotor)
-				#mrotor_y = dot(Mrotor, mhat_rotor)
-				#mrotor_z = dot(Mrotor, nhat_rotor)
+				# mrotor_x = dot(Mrotor, lhat_rotor)
+				# #mrotor_y = dot(Mrotor, mhat_rotor)
+				# #mrotor_z = dot(Mrotor, nhat_rotor)
 				
-				#print(mrotor_x)
+				# #print(mrotor_x)
             end
-			print("Total Forces - ", Fs)
-			print("Total Moment - ", Mrotor)
-			print("Moment in x-direction - ", mrotor_x)
+			# print("Total Forces - ", Fs)
+			# print("Total Moment - ", Mrotor)
+			# print("Moment in x-direction - ", mrotor_x)
             axs[2].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
-			axs[3].plot(1:size(Mrotor,1), Mrotor, stl, alpha=alpha, color=clr)
+			# axs[3].plot(1:size(Mrotor,1), Mrotor, stl, alpha=alpha, color=clr)
 
 
             # Lift distribution
@@ -221,6 +221,9 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             #end
             #axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
         end
+
+        Rthrust,_ = vlm.calc_thrust_torque
+        print("The thrust in Newton is ", Rthrust)
 
         # Plot performance parameters
         for (i, rotor) in enumerate(rotors)
