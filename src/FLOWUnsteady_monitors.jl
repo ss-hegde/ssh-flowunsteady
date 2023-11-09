@@ -221,10 +221,13 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             #end
             #axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
         end
-
-        Rthrust,_ = vlm.calc_thrust_torque
-        print("The thrust in Newton is ", Rthrust)
-
+        
+        # Modified part
+        for (i, rotor) in enumerate(rotors)
+            Rthrust,_ = vlm.calc_thrust_torque(rotor)
+            print("The thrust in Newton is ", Rthrust)
+        end
+        
         # Plot performance parameters
         for (i, rotor) in enumerate(rotors)
             CT, CQ = vlm.calc_thrust_torque_coeffs(rotor, rho_ref)
