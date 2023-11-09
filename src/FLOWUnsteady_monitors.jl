@@ -282,11 +282,6 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         end
        # End of modified part
 
-        # Radial length of every horseshoe
-        lengths = Float64[2*(rotor._r[1]-self.hubR)]
-        for i in 2:get_mBlade(self)
-            push!(lengths, 2*(self._r[i]-self._r[i-1])-lengths[end] )
-        end
 
         
         # Plot performance parameters
