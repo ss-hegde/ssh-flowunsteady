@@ -39,7 +39,7 @@ The aerodynamic performance consists of thrust coefficient
 Integrates the load distribution along every blade to return the thrust and
 torque of the rotor.
 """
-function calc_rotor_thrust_moment(self::Rotor;)
+function calc_rotor_thrust_moment(self::vlm.Rotor;)
   # Error cases
   if !("Np" in keys(self.sol))
     error("Thrust calculation requested, but Np field not found."*
