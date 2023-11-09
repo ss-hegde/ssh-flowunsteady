@@ -32,6 +32,58 @@ The aerodynamic performance consists of thrust coefficient
 
 ![image](http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/rotorhover-example-high02-singlerotor_convergence.png)
 """
+# Added function to calculate the thrust and the resulting moment
+"""
+  `calc_thrust_torque(rotor)`
+
+Integrates the load distribution along every blade to return the thrust and
+torque of the rotor.
+"""
+function calc_rotor_thrust_moment(self::Rotor;)
+  # Error cases
+  if !("Np" in keys(self.sol))
+    error("Thrust calculation requested, but Np field not found."*
+          " Call `solvefromV()` or `solvefromCCBlade` before calling this"*
+          " function")
+  elseif !("Tp" in keys(self.sol))
+    error("Torque calculation requested, but Tp field not found."*
+          " Call `solvefromV()` or `solvefromCCBlade` before calling this"*
+          " function")
+  end
+
+  thrust = 0.0
+    #   torque = 0.0
+  moment = 0.0
+
+  # Radial length of every horseshoe
+  lengths = Float64[2*(self._r[1]-self.hubR)]
+  for i in 2:get_mBlade(self)
+    push!(lengths, 2*(self._r[i]-self._r[i-1])-lengths[end] )
+  end
+
+  # Verifying the logic
+  if abs((self.hubR + sum(lengths))/self.rotorR - 1) > 1e-7
+    error("LOGIC ERROR: Sum of lengths don't add up the radius."*
+          " Resulted in $((self.hubR + sum(lengths))), expected $self.rotorR.")
+  end
+
+  # Iterates over every blade
+  for blade_i in 1:self.B
+    Np = self.sol["Np"]["field_data"][blade_i]
+    # Tp = self.sol["Tp"]["field_data"][blade_i]
+
+    # Iterates over every horseshoe
+    for j in 1:get_mBlade(self)
+      # Integrates over this horseshoe
+      thrust += Np[j]*lengths[j]
+      moment += Np[j]*lengths[j]*self._r[j]
+    end
+  end
+
+  return thrust, moment
+end
+# End of modified part
+
 function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                                     J_ref::Real, rho_ref::Real, RPM_ref::Real, b::Real, ar::Real,
                                     nsteps_sim::Int;
@@ -224,9 +276,18 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         
         # Modified part
         for (i, rotor) in enumerate(rotors)
-            Rthrust,_ = vlm.calc_thrust_torque(rotor)
+            Rthrust,Rmoment = calc_rotor_thrust_moment(rotor)
             print("The thrust in Newton is ", Rthrust)
+            print("The moment in Nm is ", Rmoment)
         end
+       # End of modified part
+
+        # Radial length of every horseshoe
+        lengths = Float64[2*(rotor._r[1]-self.hubR)]
+        for i in 2:get_mBlade(self)
+            push!(lengths, 2*(self._r[i]-self._r[i-1])-lengths[end] )
+        end
+
         
         # Plot performance parameters
         for (i, rotor) in enumerate(rotors)
