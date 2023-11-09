@@ -284,18 +284,18 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
         end
         
-        # Modified part
-        for (i, rotor) in enumerate(rotors)
-            Rthrust,Rmoment = calc_rotor_thrust_moment(rotor)
-            # print("The thrust in Newton is ", Rthrust)
-            # print("The moment in Nm is ", Rmoment)
+    #     # Modified part
+    #     for (i, rotor) in enumerate(rotors)
+    #         Rthrust,Rmoment = calc_rotor_thrust_moment(rotor)
+    #         # print("The thrust in Newton is ", Rthrust)
+    #         # print("The moment in Nm is ", Rmoment)
 
-            if PFIELD.nt%nsteps_plot==0 && disp_conv
-                axs[7].plot([t_scaled], [Rthrust], "$(stls[i])", alpha=alpha, color=clr)
-                axs[8].plot([t_scaled], [Rmoment], "$(stls[i])", alpha=alpha, color=clr)
-            end
-        end
-       # End of modified part
+    #         if PFIELD.nt%nsteps_plot==0 && disp_conv
+    #             axs[7].plot([t_scaled], [Rthrust], "$(stls[i])", alpha=alpha, color=clr)
+    #             axs[8].plot([t_scaled], [Rmoment], "$(stls[i])", alpha=alpha, color=clr)
+    #         end
+    #     end
+    #    # End of modified part
 
 
         
