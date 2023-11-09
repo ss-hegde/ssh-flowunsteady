@@ -115,8 +115,8 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
     if disp_conv
         formatpyplot()
         fig = plt.figure(figname, figsize=[7*3, 5*2]*figsize_factor)
-        axs = fig.subplots(2, 3)
-        axs = [axs[6], axs[2], axs[4], axs[1], axs[3], axs[5]]
+        axs = fig.subplots(2, 4)
+        axs = [axs[6], axs[2], axs[4], axs[1], axs[3], axs[5], axs[7], axs[8]]
 
         push!(out_figs, fig)
         push!(out_figaxs, axs)
@@ -151,9 +151,9 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 #ax.set_ylabel(L"Lift $L$ (N)")
 				
 				ax = axs[3]
-                ax.set_title("Moment", color="gray")
+                ax.set_title("Lift distribution", color="gray")
                 ax.set_xlabel("Element index")
-                ax.set_ylabel(L"Moment $L$ (Nm)")
+                ax.set_ylabel(L"Lift $L$ (N/m)")
 
                 ax = axs[4]
                 ax.set_title(L"$C_T = \frac{T}{\rho n^2 d^4}$", color="gray")
@@ -169,6 +169,16 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 ax.set_title(L"$\eta = \frac{T u_\infty}{2\pi n Q}$", color="gray")
                 ax.set_xlabel(t_lbl)
                 ax.set_ylabel(L"Propulsive efficiency $\eta$")
+
+                ax = axs[7]
+                ax.set_title(L"Thrust in Newtons", color="gray")
+                ax.set_xlabel(t_lbl)
+                ax.set_ylabel(L"Thrust $T$ (N)")
+
+                ax = axs[8]
+                ax.set_title(L"Pitching moment of the rotor", color="gray")
+                ax.set_xlabel(t_lbl)
+                ax.set_ylabel(L"Pitching moment $M$ (Nm)")
 
 
                 for ax in axs
@@ -267,18 +277,23 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 
 
             # Lift distribution
-            #this_sol = []
-            #for rotor in rotors
-            #    this_sol = vcat(this_sol, rotor.sol["Lift"]["field_data"]...)
-            #end
-            #axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
+            this_sol = []
+            for rotor in rotors
+               this_sol = vcat(this_sol, rotor.sol["Lift"]["field_data"]...)
+            end
+            axs[3].plot(1:size(this_sol,1), this_sol, stl, alpha=alpha, color=clr)
         end
         
         # Modified part
         for (i, rotor) in enumerate(rotors)
             Rthrust,Rmoment = calc_rotor_thrust_moment(rotor)
-            print("The thrust in Newton is ", Rthrust)
-            print("The moment in Nm is ", Rmoment)
+            # print("The thrust in Newton is ", Rthrust)
+            # print("The moment in Nm is ", Rmoment)
+
+            if PFIELD.nt%nsteps_plot==0 && disp_conv
+                axs[7].plot([t_scaled], [Rthrust], "$(stls[i])", alpha=alpha, color=clr)
+                axs[8].plot([t_scaled], [Rmoment], "$(stls[i])", alpha=alpha, color=clr)
+            end
         end
        # End of modified part
 
