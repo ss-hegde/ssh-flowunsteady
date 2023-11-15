@@ -84,7 +84,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
     # Iterates over every horseshoe
     for j in 1:vlm.get_mBlade(self)
       # Integrates over this horseshoe
-      lift += lift_z[j]*lengths[j]*(-1)
+      lift += lift_z[j]*lengths[j]
       thrust += Np[j]*lengths[j]
       moment += lift_z[j]*lengths[j]*self._r[j]
     end
@@ -298,7 +298,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         for (j, rotor) in enumerate(rotors)
             RLift,Rthrust,Rmoment = calc_rotor_thrust_moment(rotor)
             # print("The thrust in Newton is ", Rthrust)
-            print("The moment in Nm is ", Rmoment)
+            print("The moment in Nm is ", RLift)
 
             if PFIELD.nt%nsteps_plot==0 && disp_conv
                 axs[7].plot([t_scaled], [Rthrust], "$(stls[j])", alpha=alpha, color=clr)
