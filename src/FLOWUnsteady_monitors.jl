@@ -54,6 +54,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
   thrust = 0.0
     #   torque = 0.0
   moment = 0.0
+  lift = 0.0
 
   # Radial length of every horseshoe
   lengths = Float64[2*(self._r[1]-self.hubR)]
