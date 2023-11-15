@@ -77,7 +77,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
     
     # z-component of the lift
     for lift_components in Lift
-        push!(lift_z, lift_components(3))
+        push!(lift_z, lift_components[3])
     end
     # Tp = self.sol["Tp"]["field_data"][blade_i]
 
