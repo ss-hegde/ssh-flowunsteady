@@ -51,10 +51,12 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
           " function")
   end
 
+  #initialization
   thrust = 0.0
     #   torque = 0.0
   moment = 0.0
   lift = 0.0
+  lift_z = []
 
   # Radial length of every horseshoe
   lengths = Float64[2*(self._r[1]-self.hubR)]
@@ -72,12 +74,17 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
   for blade_i in 1:self.B
     Np = self.sol["Np"]["field_data"][blade_i]
     Lift = self.sol["Lift"]["field_data"][blade_i]
+    
+    # z-component of the lift
+    for lift_components in Lift
+        push!(lift_z, lift_components(3))
+    end
     # Tp = self.sol["Tp"]["field_data"][blade_i]
 
     # Iterates over every horseshoe
     for j in 1:vlm.get_mBlade(self)
       # Integrates over this horseshoe
-      lift = Lift[j]*lengths[j]
+      lift += lift_z[j]*lengths[j]
       thrust += Np[j]*lengths[j]
       moment += Np[j]*lengths[j]*self._r[j]
     end
