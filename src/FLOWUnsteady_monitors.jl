@@ -70,7 +70,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
   # Iterates over every blade
   for blade_i in 1:self.B
     Np = self.sol["Np"]["field_data"][blade_i]
-    Lift = self.rotor["Lift"]["field_data"][blade_i]
+    Lift = self.sol["Lift"]["field_data"][blade_i]
     # Tp = self.sol["Tp"]["field_data"][blade_i]
 
     # Iterates over every horseshoe
