@@ -92,6 +92,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
       lift += lift_z[j]*lengths[j]
       thrust += Np[j]*lengths[j]
       moment += lift_z[j]*lengths[j]*self._r[j]
+      println(self._r[j], ",")
     #   moment += lift_z[j]*lengths[j]*self._r[j]
     end
   end
@@ -307,7 +308,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             # print("The moment in Nm is ", RLift)
 
             if PFIELD.nt%nsteps_plot==0 && disp_conv
-                axs[7].plot([t_scaled], [RLift], "$(stls[j])", alpha=alpha, color=clr)
+                axs[7].plot([t_scaled], [Rthrust], "$(stls[j])", alpha=alpha, color=clr)
                 axs[8].plot([t_scaled], [Rmoment], "$(stls[j])", alpha=alpha, color=clr)
             end
         end
