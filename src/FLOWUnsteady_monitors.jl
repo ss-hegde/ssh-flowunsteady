@@ -76,9 +76,9 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
     Lift = self.sol["Lift"]["field_data"][blade_i]
     
     # Testing
-    if length(Np) == length(Lift)
-        print("True")
-    end
+    # if length(Np) == length(Lift)
+    #     print("True")
+    # end
 
     # z-component of the lift
     for lift_components in Lift
@@ -91,7 +91,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
       # Integrates over this horseshoe
       lift += lift_z[j]*lengths[j]
       thrust += Np[j]*lengths[j]
-      moment += lift_z[j]*lengths[j]*self._r[j]
+      moment += lift_z[j]*lengths[j]*self._r[j]*(-1)
     #   moment += lift_z[j]*lengths[j]*self._r[j]
     end
   end
