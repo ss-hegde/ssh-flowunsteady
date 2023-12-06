@@ -91,8 +91,8 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
       # Integrates over this horseshoe
       lift += lift_z[j]*lengths[j]
       thrust += Np[j]*lengths[j]
-    #   moment += lift_z[j]*lengths[j]*self._r[j]
-      moment += Np[j]*lengths[j]*self._r[j]
+      moment += lift_z[j]*lengths[j]*self._r[j]
+    #   moment += Np[j]*lengths[j]*self._r[j]
     end
   end
 
