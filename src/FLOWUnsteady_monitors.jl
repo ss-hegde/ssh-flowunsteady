@@ -39,7 +39,8 @@ The aerodynamic performance consists of thrust coefficient
 Integrates the load distribution along every blade to return the thrust and
 torque of the rotor.
 """
-function calc_rotor_thrust_moment(self::vlm.Rotor;)
+function calc_rotor_thrust_moment(self::vlm.Rotor;
+                                    angle::Real )
   # Error cases
   if !("Np" in keys(self.sol))
     error("Thrust calculation requested, but Np field not found."*
@@ -91,7 +92,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;)
       # Integrates over this horseshoe
       lift += lift_z[j]*lengths[j]
       thrust += Np[j]*lengths[j]
-      moment += lift_z[j]*lengths[j]*self._r[j]
+      moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle)
     #   moment += Np[j]*lengths[j]*self._r[j]
     end
   end
@@ -302,7 +303,8 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         
         # Modified part
         for (j, rotor) in enumerate(rotors)
-            RLift,Rthrust,Rmoment = calc_rotor_thrust_moment(rotor)
+            RLift,Rthrust,Rmoment = calc_rotor_thrust_moment(rotor; 
+                                                                angle)
             # print("The thrust in Newton is ", Rthrust)
             # print("The moment in Nm is ", RLift)
 
