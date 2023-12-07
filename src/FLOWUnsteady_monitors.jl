@@ -93,6 +93,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
       lift += lift_z[j]*lengths[j]
       thrust += Np[j]*lengths[j]
       moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle)
+      println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle)))
     #   moment += Np[j]*lengths[j]*self._r[j]
     end
   end
