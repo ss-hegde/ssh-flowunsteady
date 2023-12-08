@@ -123,9 +123,9 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
     #   moment += Np[j]*lengths[j]*self._r[j]
     end
     if counter == 1
-        blade_1 += moment
+        blade_1 = moment
     elseif counter == 2
-        blade_2 += moment
+        blade_2 = moment
     end
     # resultant_moment = abs(blade_1-blade_2) 
   end
