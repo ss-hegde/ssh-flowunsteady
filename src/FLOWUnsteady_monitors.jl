@@ -106,16 +106,20 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
       thrust += Np[j]*lengths[j]
       
       if angle_deg > 0.0 && angle_deg <= 90.0
-        moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad)
+        # moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad)
+        moment += Np[j]*lengths[j]*self._r[j]*cos(angle_rad)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
       elseif angle_deg > 90.0 && angle_deg <= 180.0
-        moment += lift_z[j]*lengths[j]*self._r[j]*cos(pi - angle_rad)
+        # moment += lift_z[j]*lengths[j]*self._r[j]*cos(pi - angle_rad)
+        moment += Np[j]*lengths[j]*self._r[j]*cos(pi - angle_rad)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(pi - angle_rad)))
       elseif angle_deg > 180.0 && angle_deg <= 270.0
-        moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad - pi)
+        # moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad - pi)
+        moment += Np[j]*lengths[j]*self._r[j]*cos(angle_rad - pi)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad - pi)))
       elseif angle_deg > 270.0 && angle_deg <= 360.0
-        moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad)
+        # moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad)
+        moment += Np[j]*lengths[j]*self._r[j]*cos(angle_rad)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
       end
     #   moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle)
