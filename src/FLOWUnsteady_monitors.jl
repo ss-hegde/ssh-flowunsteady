@@ -127,9 +127,9 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
     elseif counter == 2
         blade_2 += moment
     end
-    print(size(blade_1), size(blade_2))
-    resultant_moment += abs(blade_1-blade_2) 
+    # resultant_moment = abs(blade_1-blade_2) 
   end
+  resultant_moment = abs(blade_1-blade_2) 
 
   return lift, thrust, resultant_moment
 end
