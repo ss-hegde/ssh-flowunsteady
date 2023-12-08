@@ -57,7 +57,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
     #   torque = 0.0
   moment = 0.0
   lift = 0.0
-  lift_z = []
+    #   lift_z = []
 
   # Radial length of every horseshoe
   lengths = Float64[2*(self._r[1]-self.hubR)]
@@ -81,6 +81,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
   for blade_i in 1:self.B
     Np = self.sol["Np"]["field_data"][blade_i]
     Lift = self.sol["Lift"]["field_data"][blade_i]
+    lift_z = []
     
     # Testing
     # if length(Np) == length(Lift)
