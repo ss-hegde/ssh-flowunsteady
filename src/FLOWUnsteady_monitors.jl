@@ -75,10 +75,13 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
   angle_ratio = angle/360.0
   angle_deg = (angle_ratio - trunc(angle_ratio))*360.0
   angle_rad = (angle_deg * pi)/180.0
-
+  blade_1 = []
+  blade_2 = []
 
   # Iterates over every blade
+  counter = 0
   for blade_i in 1:self.B
+    counter = counter + 1
     Np = self.sol["Np"]["field_data"][blade_i]
     Lift = self.sol["Lift"]["field_data"][blade_i]
     lift_z = []
@@ -102,21 +105,22 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
       
       if angle_deg > 0.0 && angle_deg <= 90.0
         moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad)
-        println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
+        # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
       elseif angle_deg > 90.0 && angle_deg <= 180.0
         moment += lift_z[j]*lengths[j]*self._r[j]*cos(pi - angle_rad)
-        println(angle, ",", self._r[j], ",", (self._r[j]*cos(pi - angle_rad)))
+        # println(angle, ",", self._r[j], ",", (self._r[j]*cos(pi - angle_rad)))
       elseif angle_deg > 180.0 && angle_deg <= 270.0
         moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad - pi)
-        println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad - pi)))
+        # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad - pi)))
       elseif angle_deg > 270.0 && angle_deg <= 360.0
         moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle_rad)
-        println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
+        # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
       end
     #   moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle)
     #   println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle)))
     #   moment += Np[j]*lengths[j]*self._r[j]
     end
+    println(counter)
   end
 
   return lift, thrust, moment
