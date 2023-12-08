@@ -54,8 +54,8 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
 
   #initialization
   thrust = 0.0
-    #   torque = 0.0
-  moment = 0.0
+    # torque = 0.0
+    # moment = 0.0
   lift = 0.0
     #   lift_z = []
 
@@ -85,6 +85,7 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
     Np = self.sol["Np"]["field_data"][blade_i]
     Lift = self.sol["Lift"]["field_data"][blade_i]
     lift_z = []
+    moment = 0.0
     
     # Testing
     # if length(Np) == length(Lift)
@@ -120,7 +121,12 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
     #   println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle)))
     #   moment += Np[j]*lengths[j]*self._r[j]
     end
-    println(counter)
+    if counter == 1
+        push!(blade_1, moment)
+    elseif counter == 2
+        push!(blade_2, moment)
+    end
+    print(size(blade_1), size(blade_2)) 
   end
 
   return lift, thrust, moment
