@@ -75,8 +75,9 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
   angle_ratio = angle/360.0
   angle_deg = (angle_ratio - trunc(angle_ratio))*360.0
   angle_rad = (angle_deg * pi)/180.0
-  blade_1 = []
-  blade_2 = []
+  blade_1 = 0.0
+  blade_2 = 0.0
+  resultant_moment = 0.0
 
   # Iterates over every blade
   counter = 0
@@ -122,14 +123,15 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
     #   moment += Np[j]*lengths[j]*self._r[j]
     end
     if counter == 1
-        push!(blade_1, moment)
+        blade_1 += moment
     elseif counter == 2
-        push!(blade_2, moment)
+        blade_2 += moment
     end
-    print(size(blade_1), size(blade_2)) 
+    print(size(blade_1), size(blade_2))
+    resultant_moment += abs(blade_1-blade_2) 
   end
 
-  return lift, thrust, moment
+  return lift, thrust, resultant_moment
 end
 # End of modified part
 
