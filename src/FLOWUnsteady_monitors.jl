@@ -341,27 +341,32 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         end
         
         # Modified part
-        
+        pitching_moment_rtr_1 = []
+        pitching_moment_rtr_2 = []
+        counter = 1
         for (j, rotor) in enumerate(rotors)
-            pitching_moment = []
             RLift,Rthrust,Rmoment = calc_rotor_thrust_moment(rotor; 
                                                                 angle)
             # print("The thrust in Newton is ", Rthrust)
             # print("The moment in Nm is ", RLift)
-            push!(pitching_moment, Rmoment)
+            if counter == 1
+                push!(pitching_moment_rtr_1, Rmoment)
+            elseif counter == 2
+                push!(pitching_moment_rtr_2, Rmoment)
+            end
             if PFIELD.nt%nsteps_plot==0 && disp_conv
                 axs[7].plot([t_scaled], [Rthrust], "$(stls[j])", alpha=alpha, color=clr)
                 axs[8].plot([t_scaled], [Rmoment], "$(stls[j])", alpha=alpha, color=clr)
-                
-                pitching_moment_avg = mean(pitching_moment)
-        
-                ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
-                ax_fig_moment.set_xlabel(t_lbl)
-                ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
-                ax_fig_moment.plot([t_scaled], [pitching_moment_avg], "$(stls[j])", alpha=alpha, color=clr)
             end
+            counter = counter + 1
         end
-        
+        pitching_moment_avg_1 = mean(pitching_moment_rtr_1)
+        pitching_moment_avg_2 = mean(pitching_moment_rtr_2)
+        ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
+        ax_fig_moment.set_xlabel(t_lbl)
+        ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
+        ax_fig_moment.plot([t_scaled], [pitching_moment_avg_1], "o", alpha=alpha, color=clr)
+        ax_fig_moment.plot([t_scaled], [pitching_moment_avg_2], "-", alpha=alpha, color=clr)
 
        # End of modified part
 
