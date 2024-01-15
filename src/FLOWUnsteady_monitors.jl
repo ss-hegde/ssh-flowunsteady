@@ -168,9 +168,14 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         fig = plt.figure(figname, figsize=[7*3, 5*2]*figsize_factor)
         axs = fig.subplots(2, 4)
         axs = [axs[6], axs[2], axs[4], axs[1], axs[3], axs[5], axs[7], axs[8]]
+        fig_moment = plt.figure("moment_plot", figsize=[7*3, 5*2]*figsize_factor)
+        ax_fig_moment = fig_moment.subplots(1,1)
+
 
         push!(out_figs, fig)
+        push!(out_figs, fig_moment)
         push!(out_figaxs, axs)
+        push!(out_figaxs, ax_fig_moment)
     end
 
     # Function for run_vpm! to call on each iteration
@@ -349,12 +354,11 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             end
         end
         pitching_moment_avg = mean(pitching_moment)
-        fig_moment = plt.figure("moment_plot", figsize=[7*3, 5*2]*figsize_factor)
-        fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
-        fig_moment.set_xlabel(t_lbl)
-        fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
-        fig_moment.plot([t_scaled], [pitching_moment_avg], "$(stls[j])", alpha=alpha, color=clr)
-        push!(out_figs, fig_moment)
+        
+        ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
+        ax_fig_moment.set_xlabel(t_lbl)
+        ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
+        ax_fig_moment.plot([t_scaled], [pitching_moment_avg], "$(stls[j])", alpha=alpha, color=clr)
 
        # End of modified part
 
