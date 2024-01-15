@@ -354,6 +354,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         fig_moment.set_xlabel(t_lbl)
         fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
         fig_moment.plot([t_scaled], [pitching_moment_avg], "$(stls[j])", alpha=alpha, color=clr)
+        push!(out_figs, fig_moment)
 
        # End of modified part
 
