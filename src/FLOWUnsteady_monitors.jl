@@ -336,17 +336,25 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         end
         
         # Modified part
+        pitching_moment = []
         for (j, rotor) in enumerate(rotors)
             RLift,Rthrust,Rmoment = calc_rotor_thrust_moment(rotor; 
                                                                 angle)
             # print("The thrust in Newton is ", Rthrust)
             # print("The moment in Nm is ", RLift)
-
+            push!(pitching_moment, Rmoment)
             if PFIELD.nt%nsteps_plot==0 && disp_conv
                 axs[7].plot([t_scaled], [Rthrust], "$(stls[j])", alpha=alpha, color=clr)
                 axs[8].plot([t_scaled], [Rmoment], "$(stls[j])", alpha=alpha, color=clr)
             end
         end
+        pitching_moment_avg = mean(pitching_moment)
+        fig_moment = plt.figure("moment_plot", figsize=[7*3, 5*2]*figsize_factor)
+        fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
+        fig_moment.set_xlabel(t_lbl)
+        fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
+        fig_moment.plot([t_scaled], [pitching_moment_avg], "$(stls[j])", alpha=alpha, color=clr)
+
        # End of modified part
 
 
