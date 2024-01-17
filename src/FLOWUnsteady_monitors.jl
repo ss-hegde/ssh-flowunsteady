@@ -360,6 +360,10 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 axs[7].plot([t_scaled], [Rthrust], "$(stls[j])", alpha=alpha, color=clr)
                 axs[8].plot([t_scaled], [Rmoment], "$(stls[j])", alpha=alpha, color=clr)
             end
+
+            if save_path!=nothing
+                print(f, ",", Rmoment)
+            end
             counter = counter + 1
         end
         
@@ -380,7 +384,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             end
 
             if save_path!=nothing
-                print(f, ",", rotor.RPM, ",", CT, ",", CQ, ",", eta, ",", Rmoment)
+                print(f, ",", rotor.RPM, ",", CT, ",", CQ, ",", eta)
             end
         end
 
