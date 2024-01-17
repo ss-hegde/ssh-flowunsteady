@@ -178,8 +178,8 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         push!(out_figaxs, ax_fig_moment)
     end
 
-    pitching_moment_rtr_1 = []
-    pitching_moment_rtr_2 = []
+    # pitching_moment_rtr_1 = []
+    # pitching_moment_rtr_2 = []
 
     # Function for run_vpm! to call on each iteration
     function extra_runtime_function(sim::Simulation{V, M, R},
@@ -403,13 +403,13 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         return false
     end
     
-    pitching_moment_avg_1 = mean(pitching_moment_rtr_1)
-    pitching_moment_avg_2 = mean(pitching_moment_rtr_2)
-    ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
-    ax_fig_moment.set_xlabel(t_lbl)
-    ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
-    ax_fig_moment.plot([t_scaled], [pitching_moment_avg_1], "o", alpha=alpha, color=clr)
-    ax_fig_moment.plot([t_scaled], [pitching_moment_avg_2], "*", alpha=alpha, color=clr)
+    # pitching_moment_avg_1 = mean(pitching_moment_rtr_1)
+    # pitching_moment_avg_2 = mean(pitching_moment_rtr_2)
+    # ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
+    # ax_fig_moment.set_xlabel(t_lbl)
+    # ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
+    # ax_fig_moment.plot([t_scaled], [pitching_moment_avg_1], "o", alpha=alpha, color=clr)
+    # ax_fig_moment.plot([t_scaled], [pitching_moment_avg_2], "*", alpha=alpha, color=clr)
     
     return extra_runtime_function
 
