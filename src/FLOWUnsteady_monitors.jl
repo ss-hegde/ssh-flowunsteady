@@ -178,6 +178,9 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         push!(out_figaxs, ax_fig_moment)
     end
 
+    pitching_moment_rtr_1 = []
+    pitching_moment_rtr_2 = []
+
     # Function for run_vpm! to call on each iteration
     function extra_runtime_function(sim::Simulation{V, M, R},
                                     PFIELD::vpm.ParticleField,
@@ -251,7 +254,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 f = open(fname, "w")
                 print(f, "ref age (deg),T,DT")
                 for (i, rotor) in enumerate(rotors)
-                    print(f, ",RPM_$i,CT_$i,CQ_$i,eta_$i")
+                    print(f, ",RPM_$i,CT_$i,CQ_$i,eta_$i,PitchingMoment_$i")
                 end
                 print(f, "\n")
                 close(f)
@@ -341,8 +344,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         end
         
         # Modified part
-        pitching_moment_rtr_1 = []
-        pitching_moment_rtr_2 = []
+        
         counter = 1
         for (j, rotor) in enumerate(rotors)
             RLift,Rthrust,Rmoment = calc_rotor_thrust_moment(rotor; 
@@ -360,13 +362,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             end
             counter = counter + 1
         end
-        pitching_moment_avg_1 = mean(pitching_moment_rtr_1)
-        pitching_moment_avg_2 = mean(pitching_moment_rtr_2)
-        ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
-        ax_fig_moment.set_xlabel(t_lbl)
-        ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
-        ax_fig_moment.plot([t_scaled], [pitching_moment_avg_1], "o", alpha=alpha, color=clr)
-        ax_fig_moment.plot([t_scaled], [pitching_moment_avg_2], "-", alpha=alpha, color=clr)
+        
 
        # End of modified part
 
@@ -384,7 +380,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             end
 
             if save_path!=nothing
-                print(f, ",", rotor.RPM, ",", CT, ",", CQ, ",", eta)
+                print(f, ",", rotor.RPM, ",", CT, ",", CQ, ",", eta, ",", Rmoment)
             end
         end
 
@@ -406,8 +402,17 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
 
         return false
     end
-
+    
+    pitching_moment_avg_1 = mean(pitching_moment_rtr_1)
+    pitching_moment_avg_2 = mean(pitching_moment_rtr_2)
+    ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
+    ax_fig_moment.set_xlabel(t_lbl)
+    ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
+    ax_fig_moment.plot([t_scaled], [pitching_moment_avg_1], "o", alpha=alpha, color=clr)
+    ax_fig_moment.plot([t_scaled], [pitching_moment_avg_2], "*", alpha=alpha, color=clr)
+    
     return extra_runtime_function
+
 end
 
 
