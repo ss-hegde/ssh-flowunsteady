@@ -178,8 +178,8 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
         push!(out_figaxs, ax_fig_moment)
     end
 
-    # pitching_moment_rtr_1 = []
-    # pitching_moment_rtr_2 = []
+    pitching_moment_rtr_1 = []
+    pitching_moment_rtr_2 = []
 
     # Function for run_vpm! to call on each iteration
     function extra_runtime_function(sim::Simulation{V, M, R},
