@@ -254,7 +254,10 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 f = open(fname, "w")
                 print(f, "ref age (deg),T,DT")
                 for (i, rotor) in enumerate(rotors)
-                    print(f, "PitchingMoment_$i,RPM_$i,CT_$i,CQ_$i,eta_$i")
+                    print(f, ",PitchingMoment_$i")
+                end
+                for (i, rotor) in enumerate(rotors)
+                    print(f, ",RPM_$i,CT_$i,CQ_$i,eta_$i")
                 end
                 print(f, "\n")
                 close(f)
