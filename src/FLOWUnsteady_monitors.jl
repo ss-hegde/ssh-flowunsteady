@@ -106,16 +106,16 @@ function calc_rotor_thrust_moment(self::vlm.Rotor;
       thrust += Np[j]*lengths[j]
       
       if angle_deg > 0.0 && angle_deg <= 90.0
-        moment += lift_z[j]*(lengths[j]/2.0)*self._r[j]*cos(angle_rad)
+        moment += lift_z[j]*(lengths[j])*self._r[j]*cos(angle_rad)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
       elseif angle_deg > 90.0 && angle_deg <= 180.0
-        moment += lift_z[j]*(lengths[j]/2.0)*self._r[j]*cos(pi - angle_rad)
+        moment += lift_z[j]*(lengths[j])*self._r[j]*cos(pi - angle_rad)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(pi - angle_rad)))
       elseif angle_deg > 180.0 && angle_deg <= 270.0
-        moment += lift_z[j]*(lengths[j]/2.0)*self._r[j]*cos(angle_rad - pi)
+        moment += lift_z[j]*(lengths[j])*self._r[j]*cos(angle_rad - pi)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad - pi)))
       elseif angle_deg > 270.0 && angle_deg <= 360.0
-        moment += lift_z[j]*(lengths[j]/2.0)*self._r[j]*cos(angle_rad)
+        moment += lift_z[j]*(lengths[j])*self._r[j]*cos(angle_rad)
         # println(angle, ",", self._r[j], ",", (self._r[j]*cos(angle_rad)))
       end
     #   moment += lift_z[j]*lengths[j]*self._r[j]*cos(angle)
@@ -358,28 +358,36 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             # print("The moment in Nm is ", RLift)
             if counter == 1
                 push!(pitching_moment_rtr_1, Rmoment)
+                pitching_moment_avg_1 = 0.0;
+                pitching_moment_avg_1 += mean(pitching_moment_rtr_1)
+                push!(pitching_moment_avg_rtr_1, pitching_moment_avg_1)
             elseif counter == 2
                 push!(pitching_moment_rtr_2, Rmoment)
+                pitching_moment_avg_2 = 0.0;
+                pitching_moment_avg_2 += mean(pitching_moment_rtr_2)
+                push!(pitching_moment_avg_rtr_2, pitching_moment_avg_2)
             end
             if PFIELD.nt%nsteps_plot==0 && disp_conv
                 axs[7].plot([t_scaled], [Rthrust], "$(stls[j])", alpha=alpha, color=clr)
                 axs[8].plot([t_scaled], [Rmoment], "$(stls[j])", alpha=alpha, color=clr)
             end
             
-            pitching_moment_avg_1 = 0.0;
-            pitching_moment_avg_2 = 0.0;
+            # pitching_moment_avg_1 = 0.0;
+            # pitching_moment_avg_2 = 0.0;
 
-            pitching_moment_avg_1 += mean(pitching_moment_rtr_1)
-            pitching_moment_avg_2 += mean(pitching_moment_rtr_2)
+            # pitching_moment_avg_1 += mean(pitching_moment_rtr_1)
+            # pitching_moment_avg_2 += mean(pitching_moment_rtr_2)
 
-            push!(pitching_moment_avg_rtr_1, pitching_moment_avg_1)
-            push!(pitching_moment_avg_rtr_2, pitching_moment_avg_2)
+            # push!(pitching_moment_avg_rtr_1, pitching_moment_avg_1)
+            # push!(pitching_moment_avg_rtr_2, pitching_moment_avg_2)
 
             ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
             ax_fig_moment.set_xlabel(t_lbl)
             ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
             ax_fig_moment.plot([t_scaled], [pitching_moment_avg_1], "o", alpha=alpha, color=clr)
             ax_fig_moment.plot([t_scaled], [pitching_moment_avg_2], "*", alpha=alpha, color=clr)
+            fig.savefig(joinpath(save_path, run_name*"_moment.png"),
+                                                    transparent=false, dpi=300)
             if save_path!=nothing
                 print(f, ",", Rmoment)
             end
