@@ -386,7 +386,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             ax_fig_moment.set_ylabel(L"Pitching moment $M$ (Nm)")
             ax_fig_moment.plot([t_scaled], [pitching_moment_avg_1], "o", alpha=alpha, color=clr)
             ax_fig_moment.plot([t_scaled], [pitching_moment_avg_2], "*", alpha=alpha, color=clr)
-            fig.savefig(joinpath(save_path, run_name*"_moment.png"),
+            fig_moment.savefig(joinpath(save_path, run_name*"_moment.png"),
                                                     transparent=false, dpi=300)
             if save_path!=nothing
                 print(f, ",", Rmoment)
