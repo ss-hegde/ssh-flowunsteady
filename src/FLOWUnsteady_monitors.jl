@@ -358,28 +358,28 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
             # print("The moment in Nm is ", RLift)
             if counter == 1
                 push!(pitching_moment_rtr_1, Rmoment)
-                pitching_moment_avg_1 = 0.0;
-                pitching_moment_avg_1 += mean(pitching_moment_rtr_1)
-                push!(pitching_moment_avg_rtr_1, pitching_moment_avg_1)
+                # pitching_moment_avg_1 = 0.0;
+                # pitching_moment_avg_1 += mean(pitching_moment_rtr_1)
+                # push!(pitching_moment_avg_rtr_1, pitching_moment_avg_1)
             elseif counter == 2
                 push!(pitching_moment_rtr_2, Rmoment)
-                pitching_moment_avg_2 = 0.0;
-                pitching_moment_avg_2 += mean(pitching_moment_rtr_2)
-                push!(pitching_moment_avg_rtr_2, pitching_moment_avg_2)
+                # pitching_moment_avg_2 = 0.0;
+                # pitching_moment_avg_2 += mean(pitching_moment_rtr_2)
+                # push!(pitching_moment_avg_rtr_2, pitching_moment_avg_2)
             end
             if PFIELD.nt%nsteps_plot==0 && disp_conv
                 axs[7].plot([t_scaled], [Rthrust], "$(stls[j])", alpha=alpha, color=clr)
                 axs[8].plot([t_scaled], [Rmoment], "$(stls[j])", alpha=alpha, color=clr)
             end
             
-            # pitching_moment_avg_1 = 0.0;
-            # pitching_moment_avg_2 = 0.0;
+            pitching_moment_avg_1 = 0.0;
+            pitching_moment_avg_2 = 0.0;
 
-            # pitching_moment_avg_1 += mean(pitching_moment_rtr_1)
-            # pitching_moment_avg_2 += mean(pitching_moment_rtr_2)
+            pitching_moment_avg_1 += mean(pitching_moment_rtr_1)
+            pitching_moment_avg_2 += mean(pitching_moment_rtr_2)
 
-            # push!(pitching_moment_avg_rtr_1, pitching_moment_avg_1)
-            # push!(pitching_moment_avg_rtr_2, pitching_moment_avg_2)
+            push!(pitching_moment_avg_rtr_1, pitching_moment_avg_1)
+            push!(pitching_moment_avg_rtr_2, pitching_moment_avg_2)
 
             ax_fig_moment.set_title(L"Average pitching moment of the rotors", color="gray")
             ax_fig_moment.set_xlabel(t_lbl)
