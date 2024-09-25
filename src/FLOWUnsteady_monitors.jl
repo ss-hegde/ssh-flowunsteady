@@ -266,7 +266,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 for (i, rotor) in enumerate(rotors)
                     print(f, ",RPM_$i,CT_$i,CQ_$i,eta_$i")
                 end
-                print(f, "J,AOA,Pitch (blade),Tilt,Yaw")
+                print(f, ",J,AOA,Pitch (blade),Tilt,Yaw")
                 print(f, "\n")
                 close(f)
             end
