@@ -13,7 +13,8 @@
 
 """
     generate_monitor_rotors(rotors::Array{vlm.Rotor}, J_ref::Real,
-                                rho_ref::Real, RPM_ref::Real, nsteps_sim::Int;
+                                rho_ref::Real, RPM_ref::Real, nsteps_sim::Int,
+                                AOA::Real, Pitch::Real, tilt::Real, yaw::Real;
                                 save_path=nothing)
 
 Generate a rotor monitor plotting the aerodynamic performance and blade loading
@@ -136,8 +137,12 @@ end
 # End of modified part
 
 function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
-                                    J_ref::Real, rho_ref::Real, RPM_ref::Real, b::Real, ar::Real,
-                                    nsteps_sim::Int;
+                                    J_ref::Real, rho_ref::Real, RPM_ref::Real,
+                                    nsteps_sim::Int,
+                                    AOA::Real,
+                                    Pitch::Real,
+                                    tilt::Real,
+                                    yaw::Real;
                                     t_scale=1.0,                    # Time scaling factor
                                     t_lbl="Simulation time (s)",    # Time-axis label
                                     # OUTPUT OPTIONS
@@ -261,6 +266,7 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 for (i, rotor) in enumerate(rotors)
                     print(f, ",RPM_$i,CT_$i,CQ_$i,eta_$i")
                 end
+                print(f, "J,AOA,Pitch (blade),Tilt,Yaw")
                 print(f, "\n")
                 close(f)
             end
@@ -421,6 +427,10 @@ function generate_monitor_rotors( rotors::Array{vlm.Rotor, 1},
                 fig.savefig(joinpath(save_path, run_name*"_convergence.png"),
                                                     transparent=false, dpi=300)
             end
+        end
+
+        if save_path!=nothing
+            print(f, ",", J_ref, ",", AOA, ",", Pitch, ",", tilt, ",", yaw)
         end
 
         # Close convergence file
