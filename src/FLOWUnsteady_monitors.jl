@@ -682,6 +682,7 @@ function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
                 end
                 ax.plot(y2b, [norm(Vinf(vlm.getControlPoint(wing, i), T)) for i in 1:vlm.get_m(wing)],
                                                             "-k", alpha=0.5)
+                Velinf = sum(norm(Vinf(vlm.getControlPoint(wing, i), T)) for i in 1:vlm.get_m(wing))/vlm.get_m(wing)
 
                 if save_path!=nothing
                     # Save figures
@@ -698,7 +699,7 @@ function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
             if save_path != nothing
                 # Write rotor position and time on convergence file
                 f = open(fname, "a")
-                print(f, T, ",", CLwing, ",", CDwing, ",", Lwing, ",", Dwing, ",", Vinf, ",", AOA, "\n")
+                print(f, T, ",", CLwing, ",", CDwing, ",", Lwing, ",", Dwing, ",", Velinf, ",", AOA, "\n")
                 close(f)
             end
         end
