@@ -486,7 +486,7 @@ Here is an example of this monitor:
 ![image](http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/wing-example_convergence.png)
 """
 function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
-                                rho_ref::Real, qinf_ref::Real, nsteps_sim::Int;
+                                rho_ref::Real, qinf_ref::Real, AOA::Real, nsteps_sim::Int;
                                 lencrit_f=0.5,      # Factor for critical length to ignore horseshoe forces
                                 L_dir=[0,0,1],      # Direction of lift component
                                 D_dir=[1,0,0],      # Direction of drag component
@@ -600,7 +600,7 @@ function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
             # Convergence file header
             if save_path!=nothing
                 f = open(fname, "w")
-                print(f, "T,CL,CD\n")
+                print(f, "T,CL,CD,Lift(N),Drag(N),Vinf,AOA\n")
                 close(f)
             end
         end
@@ -698,7 +698,7 @@ function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
             if save_path != nothing
                 # Write rotor position and time on convergence file
                 f = open(fname, "a")
-                print(f, T, ",", CLwing, ",", CDwing, "\n")
+                print(f, T, ",", CLwing, ",", CDwing, ",", Lwing, ",", Dwing, ",", Vinf, ",", AOA, "\n")
                 close(f)
             end
         end
