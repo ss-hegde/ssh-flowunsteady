@@ -486,8 +486,8 @@ Here is an example of this monitor:
 ![image](http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/wing-example_convergence.png)
 """
 function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
-                                rho_ref::Real, qinf_ref::Real, AOA::Real, angleOrientation::Real,
-                                angleVehicle::Real, Vvehicle::Real, nsteps_sim::Int;
+                                rho_ref::Real, qinf_ref::Real, AOA::Real, angleOrientation::Function,
+                                angleVehicle::Function, Vvehicle::Function, nsteps_sim::Int;
                                 lencrit_f=0.5,      # Factor for critical length to ignore horseshoe forces
                                 L_dir=[0,0,1],      # Direction of lift component
                                 D_dir=[1,0,0],      # Direction of drag component
