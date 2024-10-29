@@ -698,19 +698,19 @@ function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
             end
 
             # Euler angles
-            phi = angleVehicle[0]
-            theta = angleVehicle[1]
-            psi = angleVehicle[2]
+            phi = angleVehicle[1]
+            theta = angleVehicle[2]
+            psi = angleVehicle[3]
 
             # Vehicle velocity 
-            V_x = Vvehicle[0]
-            V_y = Vvehicle[1]
-            V_z = Vvehicle[2]
+            V_x = Vvehicle[1]
+            V_y = Vvehicle[2]
+            V_z = Vvehicle[3]
 
             # Vehicle Orientation
-            orientation_phi = angleOrientation[0]
-            orientation_theta = angleOrientation[1]
-            orientation_psi = angleOrientation[2]
+            orientation_phi = angleOrientation[1]
+            orientation_theta = angleOrientation[2]
+            orientation_psi = angleOrientation[3]
             
             # Effective angle of attack
             alpha_eff = AOA + orientation_theta + theta
