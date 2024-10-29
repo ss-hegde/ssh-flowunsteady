@@ -486,7 +486,8 @@ Here is an example of this monitor:
 ![image](http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/wing-example_convergence.png)
 """
 function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
-                                rho_ref::Real, qinf_ref::Real, AOA::Real, nsteps_sim::Int;
+                                rho_ref::Real, qinf_ref::Real, AOA::Real, angleOrientation::Real,
+                                angleVehicle::Real, Vvehicle::Real, nsteps_sim::Int;
                                 lencrit_f=0.5,      # Factor for critical length to ignore horseshoe forces
                                 L_dir=[0,0,1],      # Direction of lift component
                                 D_dir=[1,0,0],      # Direction of drag component
@@ -600,7 +601,7 @@ function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
             # Convergence file header
             if save_path!=nothing
                 f = open(fname, "w")
-                print(f, "T,CL,CD,Lift(N),Drag(N),Vinf,AOA\n")
+                print(f, "T,CL,CD,Lift(N),Drag(N),Vinf,alpha(eff),vVehicle_x,vVehicle_y,vVehicle_z,phi,theta,psi \n")
                 close(f)
             end
         end
@@ -696,10 +697,28 @@ function generate_monitor_wing(wing, Vinf::Function, b_ref::Real, ar_ref::Real,
                 end
             end
 
+            # Euler angles
+            phi = angleVehicle(0)
+            theta = angleVehicle(1)
+            psi = angleVehicle(2)
+
+            # Vehicle velocity 
+            V_x = Vvehicle(0)
+            V_y = Vvehicle(1)
+            V_z = Vvehicle(2)
+
+            # Vehicle Orientation
+            orientation_phi = angleOrientation(0)
+            orientation_theta = angleOrientation(1)
+            orientation_psi = angleOrientation(2)
+            
+            # Effective angle of attack
+            alpha_eff = AOA + orientation_theta + theta
+
             if save_path != nothing
                 # Write rotor position and time on convergence file
                 f = open(fname, "a")
-                print(f, T, ",", CLwing, ",", CDwing, ",", Lwing, ",", Dwing, ",", Velinf, ",", AOA, "\n")
+                print(f, T, ",", CLwing, ",", CDwing, ",", Lwing, ",", Dwing, ",", Velinf, ",", alpha_eff, ",", V_x, ",", V_y, ",", V_z, ",", phi, ",", theta, ",", psi, "\n")
                 close(f)
             end
         end
