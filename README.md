@@ -48,9 +48,9 @@ over long distances with minimal numerical dissipation.
 The rVPM uses particles to discretize the Navier-Stokes equations, with the
 particles representing radial basis functions that construct a continuous
 vorticity/velocity field. The basis functions become the LES filter, providing a
-variable filter width and spatial adaption as the particles are convected and
+variable filter width and spatial adaptation as the particles are convected and
 stretched by the velocity field. The local evolution of the filter width
-provides an extra degree of freedom to reinforce conservations laws, which makes
+provides an extra degree of freedom to reinforce conservation laws, which makes
 the reformulated VPM numerically stable (overcoming the numerical issues that
 plague the classic VPM).
 
@@ -61,7 +61,7 @@ In the absence of a mesh,
 3. derivatives are calculated analytically rather than approximated through a stencil.
 
 Furthermore, rVPM is highly efficient since it uses computational elements only
-where there is vorticity (rather than meshing the entire space), making it 100x
+where there is vorticity (rather than meshing the entire space), usually being ~100x
 faster than conventional mesh-based LES with comparable accuracy.
 
 
@@ -84,7 +84,7 @@ vorticity back into the LES domain.
 <p align="center"> <a href="https://www.youtube.com/watch?v=-6aR37Z6hig&hd=1"> <img src="http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/youtube-vahanahi.png" alt="youtube.com/watch?v=-6aR37Z6hig" style="width:70%"> </a> </p>
 
 
-### Variable Fidelity for Preliminary-to-Detailed Design
+### Variable Fidelity
 
 rVPM considerably reduces engineering time by avoiding the hurdles of mesh
 generation. Furthermore, since it is not limited by the time-step and stability
@@ -128,14 +128,19 @@ the different stages of design.
   > *• Airfoil lookup tables automatically generated through XFOIL*
   > *• Aeroacoustic noise through FW-H (PSU-WOPWOP) and BPM*
   >
+  > **Geometry:**
+  > *Simple lofts and bodies of revolution through FLOWUnsteady*
+  > *• Import complex geometry from [OpenVSP](https://openvsp.org/)*
+  >
   > **Under development *(*🤞*coming soon)*:**
   > *Advanced actuator surface models through 3D panel method (for ducts, wings, and fuselage)*
+  > *• Unstructured surface grids*
   > *• Bluff bodies through vortex sheet method*
   >
   > **Limitations:**
   > *Viscous drag and separation is only captured through airfoil lookup tables, without attempting to shed separation wakes*
   > *• Incompressible flow only (though wave drag can be captured through airfoil lookup tables)*
-  > *• CPU parallelization through OpenMP without support for distributed memory (no MPI, i.e., only single-node* runs)
+  > *• CPU parallelization through OpenMP without support for distributed memory (no MPI, i.e., only single-node runs)*
   >
   > *Coded in [the Julia language](https://www.infoworld.com/article/3284380/what-is-julia-a-fresh-approach-to-numerical-computing.html) for Linux, MacOS, and Windows WSL.*
 
@@ -156,12 +161,12 @@ More about the models inside FLOWUnsteady:
 See the following publications for an in-depth dive into the theory and validation:
 
 * E. J. Alvarez, J. Mehr, & A. Ning (2022), "FLOWUnsteady: An Interactional Aerodynamics Solver for Multirotor Aircraft and Wind Energy," *AIAA AVIATION Forum*. [**[VIDEO]**](https://youtu.be/SFW2X8Lbsdw) [**[PDF]**](https://scholarsarchive.byu.edu/facpub/5830/)
-* E. J. Alvarez & A. Ning (2022), "Reviving the Vortex Particle Method: A Stable Formulation for Meshless Large Eddy Simulation," *(in review)*. [**[PDF]**](https://arxiv.org/pdf/2206.03658.pdf)
 * E. J. Alvarez (2022), "Reformulated Vortex Particle Method and Meshless Large Eddy Simulation of Multirotor Aircraft.," *Doctoral Dissertation, Brigham Young University*. [**[VIDEO]**](https://www.nas.nasa.gov/pubs/ams/2022/08-09-22.html) [**[PDF]**](https://scholarsarchive.byu.edu/etd/9589/)
+* E. J. Alvarez & A. Ning (2023), "Stable Vortex Particle Method Formulation for Meshless Large-Eddy Simulation," *AIAA Journal*. [**[PDF]**](https://arc.aiaa.org/doi/epdf/10.2514/1.J063045)
 
 <p><br></p>
 
-### Examples
+### Examples and Tutorials
 
 **Propeller:** [[Tutorial](https://flow.byu.edu/FLOWUnsteady/examples/propeller-J040)] [[Validation](https://flow.byu.edu/FLOWUnsteady/theory/validation/#Propeller)]
 
@@ -175,11 +180,13 @@ See the following publications for an in-depth dive into the theory and validati
 
 **Blown Wing:** [[Tutorial](https://flow.byu.edu/FLOWUnsteady/examples/blownwing-aero)] [[Validation](https://flow.byu.edu/FLOWUnsteady/theory/validation/#Rotor-Wing-Interactions)]
 
-<p align="center">
-  <img src="http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/prowimhtp-wvol34-cropped00.jpg" alt="img" style="width:100%">
-</p>
+<p align="center"> <a href="https://www.youtube.com/watch?v=GfS3NoVrFfU&hd=1"> <img src="http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/youtube-rotorwing.png" alt="youtube.com/watch?v=GfS3NoVrFfU" style="width:70%"> </a> </p>
 
-<p><br></p>
+
+**Ducted Fan:** [[Slides](http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/alvarez_2023-SLIDES-VPM_for_EDF_in_Non_Axisymmetric_Flow.pdf)]
+
+<p align="center"> <a href="https://www.youtube.com/watch?v=BQpar3A0X-w&hd=1"> <img src="http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/youtube-edf.png" alt="youtube.com/watch?v=BQpar3A0X-w" style="width:70%"> </a> </p>
+
 
 **Airborne-Wind-Energy Aircraft:** [[Video](https://www.youtube.com/watch?v=iFM3B4_N2Ls)]
 
@@ -199,11 +206,12 @@ High-fidelity
 
 **Aeroacoustic Noise:** [[Tutorial](https://flow.byu.edu/FLOWUnsteady/examples/rotorhover-acoustics)] [[Validation](https://flow.byu.edu/FLOWUnsteady/theory/validation/#Rotor)]
 
+<p align="center"> <a href="https://www.youtube.com/watch?v=ntQjP6KbZDk&hd=1"> <img src="http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/youtube-vahananoise.png" alt="youtube.com/watch?v=ntQjP6KbZDk" style="width:70%"> </a> </p>
+
 <p align="center">
   <img src="http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/cfdnoise_ningdji_multi_005D_03_20.gif" alt="Vid" style="width:60%"/>
 </p>
 
-<p align="center"> <a href="https://www.youtube.com/watch?v=ntQjP6KbZDk&hd=1"> <img src="http://edoalvar2.groups.et.byu.net/public/FLOWUnsteady/youtube-vahananoise.png" alt="youtube.com/watch?v=ntQjP6KbZDk" style="width:70%"> </a> </p>
 
 
 
@@ -228,12 +236,14 @@ If you find FLOWUnsteady useful in your work, we kindly request that you cite th
 
 >Alvarez, E. J., Mehr, J., and Ning, A., “FLOWUnsteady: An Interactional Aerodynamics Solver for Multirotor Aircraft and Wind Energy,” AIAA AVIATION 2022 Forum, Chicago, IL, 2022. DOI:[10.2514/6.2022-3218](https://doi.org/10.2514/6.2022-3218).
 
-If you were to encounter any issues, please first read through
-[the documentation](https://flow.byu.edu/FLOWUnsteady/) and [open/closed
-issues](https://github.com/byuflowlab/FLOWUnsteady/issues?q=is%3Aissue+is%3Aclosed).
-If the issue still persists, please
-[open a new issue](https://github.com/byuflowlab/FLOWUnsteady/issues).
+If you were to encounter any issues or have questions, please first read through
+[the documentation](https://flow.byu.edu/FLOWUnsteady/), [open/closed
+issues](https://github.com/byuflowlab/FLOWUnsteady/issues?q=is%3Aissue+is%3Aclosed),
+and [the discussion forum](https://github.com/byuflowlab/FLOWUnsteady/discussions?discussions_q=).
+If the issue still persists, please participate in
+[the discussion forum](https://github.com/byuflowlab/FLOWUnsteady/discussions?discussions_q=)
+and/or [open a new issue](https://github.com/byuflowlab/FLOWUnsteady/issues).
 
-  * Main developer    : Eduardo J. Alvarez ([edoalvarez.com](https://www.edoalvarez.com/))
+  * Developers/contributors : [Eduardo J. Alvarez](https://www.edoalvarez.com/) (main), [Cibin Joseph](https://github.com/cibinjoseph), [Judd Mehr](https://www.juddmehr.com/), [Ryan Anderson](https://flow.byu.edu/people/), [Eric Green](https://flow.byu.edu/people/)
   * Created           : Sep 2017
   * License           : MIT License
